@@ -19,24 +19,20 @@ leaderboardRouter.get('/update', async (req, res) => {
 
     users.map(async (user) => {
         let points = 0;
-
-        user.results.map(res => {
+        user.results.forEach(res => {
 
             const match = matches.find(m => m.MatchNumber === res.MatchNumber);
             if (!match) return;
             const matchResult = getResultPrediction(match);
-
-            if (match.HomeTeamScore === res.HomeTeamScore && match.AwayTeamScore === res.AwayTeamScore) points += 2;
+            console.log(`${matchResult} - ${res.result}`);
+            if (match.HomeTeamScore === res.HomeTeamScore && match.AwayTeamScore === res.AwayTeamScore) points += 3;
             else if (matchResult === res.result) points += 1;
         });
-
-        const rowLeaderboard = new RowLeaderboard({
+        await RowLeaderboard.findOneAndUpdate({ uid: user.uid }, {
             displayName: user.displayName,
             uid: user.uid,
             points
-        });
-
-        await RowLeaderboard.findOneAndUpdate({ uid: user.uid }, rowLeaderboard, { upsert: true });
+        }, { upsert: true });
 
     });
 
