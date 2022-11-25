@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import userRouter from "./routes/userRouter.js";
 import matchRouter from './routes/matchRouter.js';
 import leaderboardRouter from "./routes/leaderboardRouter.js";
+import groupRouter from "./routes/groupRouter.js";
+
 import cors from 'cors';
 
 dotenv.config();
@@ -19,6 +21,7 @@ app.use(express.json());
 app.use('/api/users', userRouter);
 app.use('/api/matches', matchRouter);
 app.use('/api/leaderboard', leaderboardRouter);
+app.use('/api/groups', groupRouter);
 
 mongoose.connect(process.env.ATLAS_URI, {
     useNewUrlParser: true,
