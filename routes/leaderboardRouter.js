@@ -24,7 +24,6 @@ leaderboardRouter.get('/update', async (req, res) => {
             const match = matches.find(m => m.MatchNumber === res.MatchNumber);
             if (!match) return;
             const matchResult = getResultPrediction(match);
-            console.log(`${matchResult} - ${res.result}`);
             if (match.HomeTeamScore === res.HomeTeamScore && match.AwayTeamScore === res.AwayTeamScore) points += 3;
             else if (matchResult === res.result) points += 1;
         });
