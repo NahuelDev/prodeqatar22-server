@@ -47,4 +47,36 @@ leaderboardRouter.get('/', async (req, res) => {
     res.json(leaderboard);
 });
 
+leaderboardRouter.get('/matches', async (req, res) => {
+    let resMatches = [];
+    const matches = await Match.find().select('-_id');
+    const dateMatchFinished = new Date(new Date().setUTCHours(new Date().getUTCHours() + 2));
+    const matchesNotFinished = matches.filter(m => {
+        if (m.AwayTeamScore === null && m.HomeTeamScore === null) return (new Date(m.DateUtc) <= Date.now() && new Date(m.DateUtc) <= dateMatchFinished);
+        return new Date(m.DateUtc) < dateMatchFinished;
+    });
+
+    const usersDB = await User.find({}).select('-_id uid results displayName');
+
+    matchesNotFinished.forEach(m => {
+        let users = [];
+        usersDB.forEach(u => {
+            const prediction = u.results.find(result => result.MatchNumber === m.MatchNumber);
+
+            const user = {
+                ...prediction,
+                uid: u.uid,
+                displayName: u.displayName
+            }
+            users.push(user);
+        });
+
+        resMatches.push({
+            ...m._doc,
+            users
+        });
+    });
+
+    res.json(resMatches);
+});
 export default leaderboardRouter;
