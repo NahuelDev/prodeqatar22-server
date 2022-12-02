@@ -2,6 +2,7 @@ import { Router } from "express";
 import { Match } from "../models/Match.js";
 import { User } from "../models/User.js";
 import { RowLeaderboard } from "../models/Leaderboard.js";
+import { LiveScore } from "../models/LiveScore.js";
 
 const leaderboardRouter = Router();
 
@@ -89,4 +90,10 @@ leaderboardRouter.get('/matches', async (req, res) => {
 
     res.json(resMatches);
 });
+
+leaderboardRouter.get('/livescore', async (req, res) => {
+    const liveScore = (await LiveScore.find({}).select('-__v -_id'));
+    res.json(liveScore);
+});
+
 export default leaderboardRouter;
