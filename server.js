@@ -64,9 +64,7 @@ const getLiveMatches = () => {
                 }, { upsert: true });
             });
 
-        }).catch(err => {
-            console.log(err);
-        });
+        })
 };
 
 
