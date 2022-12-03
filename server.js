@@ -42,7 +42,7 @@ const getLiveMatches = () => {
             const enc = new TextDecoder('utf-8');
 
             const res = enc.decode(data);
-            if (res.includes('nginx')) return;
+            if (res.includes('nginx') || res.includes('No event found')) return;
             const resJSON = JSON.parse(res);
             resJSON.forEach(async (match) => {
                 const { match_id, match_hometeam_name, match_hometeam_score, match_awayteam_name, match_awayteam_score, match_status } = match;
@@ -64,7 +64,9 @@ const getLiveMatches = () => {
                 }, { upsert: true });
             });
 
-        })
+        }).catch(err => {
+            console.log(err);
+        });
 };
 
 
