@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
-import { LiveScore } from "./models/LiveScore.js";
-import { Match } from './models/Match.js';
+import { LiveScore } from "../models/LiveScore.js";
+import { Match } from '../models/Match.js';
 
 const getLiveMatches = () => {
     fetch(`https://apiv3.apifootball.com/?action=get_events&APIkey=${process.env.APIFOOTBALL}&&league_id=28&match_live=1`)
