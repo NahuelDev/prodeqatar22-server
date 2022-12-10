@@ -16,20 +16,20 @@ const getLiveMatches = () => {
             const resJSON = JSON.parse(res);
 
             resJSON.forEach(async (match) => {
-                const { match_id, match_hometeam_name, match_hometeam_ft_score, match_awayteam_name, match_awayteam_ft_score, match_status } = match;
+                const { match_id, match_hometeam_name, match_hometeam_ft_score, match_hometeam_score, match_awayteam_score, match_awayteam_name, match_awayteam_ft_score, match_status } = match;
 
                 const matchID = match_id;
                 const homeTeam = match_hometeam_name;
                 const awayTeam = match_awayteam_name;
-                const homeTeamScore = Number(match_hometeam_ft_score);
-                const awayTeamScore = Number(match_awayteam_ft_score);
+                const homeTeamScore = Number(match_hometeam_score);
+                const awayTeamScore = Number(match_awayteam_score);
                 const matchTime = match_status;
 
                 if (matchTime === 'Finished' || matchTime === 'After Pen.') {
 
                     await Match.findOneAndUpdate({ HomeTeam: homeTeam, AwayTeam: awayTeam }, {
-                        HomeTeamScore: homeTeamScore,
-                        AwayTeamScore: awayTeamScore
+                        HomeTeamScore: match_hometeam_ft_score,
+                        AwayTeamScore: match_awayteam_ft_score
                     });
                     const serverURI = process.env.SERVERURI;
 
