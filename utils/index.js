@@ -25,14 +25,15 @@ const getLiveMatches = () => {
                 const awayTeamScore = Number(match_awayteam_ft_score);
                 const matchTime = match_status;
 
-                if (matchTime === 'Finished') {
+                if (matchTime === 'Finished' || matchTime === 'After Pen.') {
 
                     await Match.findOneAndUpdate({ HomeTeam: homeTeam, AwayTeam: awayTeam }, {
                         HomeTeamScore: homeTeamScore,
                         AwayTeamScore: awayTeamScore
                     });
+                    const serverURI = process.env.SERVERURI;
 
-                    await fetch('/api/leaderboard/update');
+                    await fetch(`${serverURI}/api/leaderboard/update`);
 
                 } else {
 
