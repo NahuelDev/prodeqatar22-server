@@ -33,7 +33,9 @@ mongoose.connect(process.env.ATLAS_URI, {
 
 app.listen(port, () => {
     console.log('Server on port ', port);
-    setInterval(() => {
-        getLiveMatches();
-    }, 45000);
+    if (process.env.LIVEMATCHES === 'TRUE') {
+        setInterval(() => {
+            getLiveMatches();
+        }, 45000);
+    }
 },);
